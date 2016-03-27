@@ -1,3 +1,4 @@
+import subprocess
 from collections import defaultdict
 from invoke import run, task
 import itunes
@@ -59,6 +60,18 @@ def print_popular_songs():
         print_('- ' + u'\n- '.join(info.songs) + '\n')
 
     print_('\nListed %d artists' % len(artists))
+
+
+@task
+def show_mp3_gain(playlist):
+    tunes = itunes.ITunes()
+    playlist = tunes[playlist]
+
+    for track in playlist.tracks:
+        print track.title
+        path = track.path
+        if path.endswith('.mp3'):
+            subprocess.call(['mp3gain', path])
 
 
 def print_(s):

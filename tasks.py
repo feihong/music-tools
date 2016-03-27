@@ -1,5 +1,9 @@
+import os.path as op
+import codecs
+import shutil
 import subprocess
 from collections import defaultdict
+import itertools
 from invoke import run, task
 import itunes
 
@@ -72,6 +76,38 @@ def show_mp3_gain(playlist):
         path = track.path
         if path.endswith('.mp3'):
             subprocess.call(['mp3gain', path])
+
+
+@task
+def copy_playlist_files(playlist, dest_dir, start=None, end=None):
+    """
+    Given the name of a playlist and a directory, copy all songs from the playlist
+    into that directory, and also generate a text file containing the lyrics of all
+    the songs in the playlist.
+
+    """
+    lyrics_path = op.join(dest_dir, 'lyrics.txt')
+
+    with codecs.open(lyrics_path, 'w', 'utf-8') as fp:
+        for track in get_tracks(playlist):
+            path = track.path
+            output_path = op.join(dest_dir, op.basename(path))
+            shutil.copy(path, output_path)
+            print '%s - %s' % (track.title, track.artist)
+
+            if track.lyrics:
+                fp.write('Title: %s\n' % track.title)
+                fp.write('Artist: %s\n\n' % track.artist)
+                fp.write(track.lyrics + '\n\n')
+                fp.write('=' * 80 + '\n\n')
+
+
+def get_tracks(playlist_name):
+    import itunes
+    tunes = itunes.ITunes()
+    playlist = tunes[playlist_name]
+    for track in playlist.tracks:
+        yield track
 
 
 def print_(s):

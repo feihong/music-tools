@@ -79,7 +79,7 @@ def show_mp3_gain(playlist):
 
 
 @task
-def copy_playlist_files(playlist, dest_dir, start=None, end=None):
+def copy_playlist_files(playlist, dest_dir, start=None, stop=None):
     """
     Given the name of a playlist and a directory, copy all songs from the playlist
     into that directory, and also generate a text file containing the lyrics of all
@@ -88,8 +88,13 @@ def copy_playlist_files(playlist, dest_dir, start=None, end=None):
     """
     lyrics_path = op.join(dest_dir, 'lyrics.txt')
 
+    if start is not None:
+        start = int(start) - 1
+    if stop is not None:
+        stop = int(stop)
+
     with codecs.open(lyrics_path, 'w', 'utf-8') as fp:
-        for track in get_tracks(playlist):
+        for track in get_tracks(playlist, start, stop):
             path = track.path
             output_path = op.join(dest_dir, op.basename(path))
             shutil.copy(path, output_path)
@@ -102,11 +107,11 @@ def copy_playlist_files(playlist, dest_dir, start=None, end=None):
                 fp.write('=' * 80 + '\n\n')
 
 
-def get_tracks(playlist_name):
+def get_tracks(playlist_name, start=None, stop=None):
     import itunes
     tunes = itunes.ITunes()
     playlist = tunes[playlist_name]
-    for track in playlist.tracks:
+    for track in itertools.islice(playlist.tracks, start, stop):
         yield track
 
 

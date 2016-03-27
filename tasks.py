@@ -5,6 +5,7 @@ import subprocess
 from collections import defaultdict
 import itertools
 from invoke import run, task
+from mako.template import Template
 import itunes
 
 
@@ -86,30 +87,69 @@ def copy_playlist_files(playlist, dest_dir, start=None, stop=None):
     the songs in the playlist.
 
     """
-    lyrics_path = op.join(dest_dir, 'lyrics.txt')
+    lyrics_path = op.join(dest_dir, 'lyrics.html')
 
     if start is not None:
         start = int(start) - 1
     if stop is not None:
         stop = int(stop)
 
-    with codecs.open(lyrics_path, 'w', 'utf-8') as fp:
-        for track in get_tracks(playlist, start, stop):
-            path = track.path
-            output_path = op.join(dest_dir, op.basename(path))
-            shutil.copy(path, output_path)
-            print '%s - %s' % (track.title, track.artist)
+    lyric_tracks = []
 
-            if track.lyrics:
-                fp.write('Title: %s\n' % track.title)
-                fp.write('Artist: %s\n\n' % track.artist)
-                fp.write(track.lyrics + '\n\n')
-                fp.write('=' * 80 + '\n\n')
+    for track in get_tracks(playlist, start, stop):
+        path = track.path
+        output_path = op.join(dest_dir, op.basename(path))
+        shutil.copy(path, output_path)
+        print '%s - %s' % (track.title, track.artist)
+        if track.lyrics:
+            lyric_tracks.append(track)
+
+    with codecs.open(lyrics_path, 'w', 'utf-8') as fp:
+        tmpl = Template(HTML_TEMPLATE)
+        fp.write(tmpl.render(tracks=lyric_tracks))
+
+
+HTML_TEMPLATE = """\
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Lyrics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<h1>Lyrics</h1>
+
+% for track in tracks:
+    <div>
+        <h2>${track.title}</h2>
+        <h3>${track.artist}</h3>
+
+        <div>
+            <audio controls>
+                <source src='${track.filename}'>
+            </audio>
+        </div>
+
+        <div>
+        % for line in track.lyrics.splitlines():
+            ${line}<br>
+        % endfor
+        </div>
+    </div>
+% endfor
+</body>
+</html>
+"""
 
 
 def get_tracks(playlist_name, start=None, stop=None):
     import itunes
     tunes = itunes.ITunes()
+    if not isinstance(playlist_name, unicode):
+        playlist_name = playlist_name.decode('utf-8')
     playlist = tunes[playlist_name]
     for track in itertools.islice(playlist.tracks, start, stop):
         yield track

@@ -1,5 +1,6 @@
 import sys
 import itertools
+import os.path
 
 
 try:
@@ -80,6 +81,9 @@ class Track(object):
 
     @property
     def path(self): return self._track.get().location().path()
+
+    @property
+    def filename(self): return os.path.basename(self.path)
 
     @property
     def lyrics(self): return self._track.lyrics()

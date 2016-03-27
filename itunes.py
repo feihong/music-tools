@@ -81,6 +81,9 @@ class Track(object):
     @property
     def path(self): return self._track.get().location().path()
 
+    @property
+    def lyrics(self): return self._track.lyrics()
+
 
 def first(iterable, predicate):
     "Return the first element in `iterable` that matches `predicate`."

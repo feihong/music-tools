@@ -4,6 +4,7 @@ import shutil
 import subprocess
 from collections import defaultdict
 import itertools
+from datetime import datetime
 from invoke import run, task
 from mako.template import Template
 import itunes
@@ -107,6 +108,24 @@ def copy_playlist_files(playlist, dest_dir, start=None, stop=None):
     with codecs.open(lyrics_path, 'w', 'utf-8') as fp:
         tmpl = Template(HTML_TEMPLATE)
         fp.write(tmpl.render(tracks=lyric_tracks))
+
+
+@task
+def copy_tracks_newer_than(date, dest_dir):
+    """
+    Copy music files newer than the given date to the specified directory.
+    Accepts date strings in the form YYYY-mm-dd.
+
+    """
+    start_date = datetime.strptime(date, '%Y-%m-%d')
+    tunes = itunes.ITunes()
+    count = 0
+    for track in tunes.tracks:
+        if track.date_added >= start_date:
+            print track.title
+            shutil.copy(track.path, dest_dir)
+            count += 1
+    print 'Copied %d tracks to %s' % (count, dest_dir)
 
 
 HTML_TEMPLATE = """\

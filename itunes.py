@@ -1,6 +1,7 @@
 import sys
 import itertools
 import os.path
+from datetime import datetime
 
 
 try:
@@ -87,6 +88,10 @@ class Track(object):
 
     @property
     def lyrics(self): return self._track.lyrics()
+
+    @property
+    def date_added(self):
+        return datetime.fromtimestamp(self._track.dateAdded().timeIntervalSince1970())
 
 
 def first(iterable, predicate):

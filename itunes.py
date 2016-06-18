@@ -28,6 +28,12 @@ class ITunes(object):
         "Return all music tracks."
         return self['Music'].tracks
 
+    def add_playlist(self, name):
+        props = dict(name=name)
+        playlist = self.app.classForScriptingClass_("playlist").alloc().initWithProperties_(props)
+        self.app.sources()[0].playlists().insertObject_atIndex_(playlist, 0)
+        return Playlist(playlist)
+
     def __getitem__(self, name):
         playlist = first(self.source.userPlaylists(), lambda x: x.name() == name)
         return Playlist(playlist)
@@ -46,11 +52,17 @@ class Playlist(object):
     def tracks(self):
         return (Track(t) for t in self._playlist.tracks())
 
+    def add_track(self, track):
+        track._track.duplicateTo_(self._playlist)
+
 
 class Track(object):
     "Wrapper class for ITunesTrack"
     def __init__(self, track):
         self._track = track
+
+    @property
+    def unique_id(self): return self._track.id()
 
     @property
     def title(self): return self._track.name()
@@ -81,17 +93,25 @@ class Track(object):
             return 0
 
     @property
-    def path(self): return self._track.get().location().path()
+    def path(self):
+        return self._track.get().location().path()
 
     @property
-    def filename(self): return os.path.basename(self.path)
+    def filename(self):
+        return os.path.basename(self.path)
 
     @property
-    def lyrics(self): return self._track.lyrics()
+    def lyrics(self):
+        return self._track.lyrics()
+
+    @property
+    def duration(self):
+        return self._track.duration()
 
     @property
     def date_added(self):
-        return datetime.fromtimestamp(self._track.dateAdded().timeIntervalSince1970())
+        return datetime.fromtimestamp(
+            self._track.dateAdded().timeIntervalSince1970())
 
 
 def first(iterable, predicate):

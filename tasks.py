@@ -5,8 +5,11 @@ import subprocess
 from collections import defaultdict
 import itertools
 from datetime import datetime
+import random
+
 from invoke import run, task
 from mako.template import Template
+
 import itunes
 
 
@@ -126,6 +129,40 @@ def copy_tracks_newer_than(date, dest_dir):
             shutil.copy(track.path, dest_dir)
             count += 1
     print 'Copied %d tracks to %s' % (count, dest_dir)
+
+
+@task
+def new_playlist(name, duration):
+    """
+    Create a new playlist of random songs rated 4 stars or above, lasting at
+    least the given duration (in hours).
+
+    """
+    # Convert to seconds.
+    duration = float(duration) * 3600
+    tunes = itunes.ITunes()
+
+    playlist = tunes.add_playlist(name)
+
+    results = {}
+    curr_duration = 0
+    num = 1
+
+    tracks = [t for t in tunes.tracks if t.stars >= 4]
+    print len(tracks)
+
+    while True:
+        track = random.choice(tracks)
+        if track.unique_id not in results:
+            results[track.unique_id] = track
+            playlist.add_track(track)
+            curr_duration += track.duration
+            num += 1
+            print num, track.title, curr_duration
+            if curr_duration > duration:
+                break
+
+    print 'Added %d tracks to %s' % (len(results), name)
 
 
 HTML_TEMPLATE = """\

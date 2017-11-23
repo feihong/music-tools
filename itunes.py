@@ -3,19 +3,14 @@ import itertools
 import os.path
 from datetime import datetime
 
-
-try:
-    pyobjc_path = '/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/PyObjC/'
-    sys.path.append(pyobjc_path)
-    from ScriptingBridge import SBApplication
-    from Foundation import NSMutableIndexSet, NSURL
-except ImportError:
-    print 'Unable to find PyObjC at ' + pyobjc_path
+from ScriptingBridge import SBApplication
+from Foundation import NSMutableIndexSet, NSURL
 
 
 class ITunes(object):
     def __init__(self):
-        self.app = app = SBApplication.applicationWithBundleIdentifier_('com.apple.iTunes')
+        self.app = app = SBApplication.applicationWithBundleIdentifier_(
+            'com.apple.iTunes')
         self.app.setFixedIndexing_(True)
         self.source = first(app.sources(), lambda x: x.name() == 'Library')
 
@@ -117,15 +112,6 @@ class Track(object):
 def first(iterable, predicate):
     "Return the first element in `iterable` that matches `predicate`."
     try:
-        return itertools.ifilter(predicate, iterable).next()
+        return next(filter(predicate, iterable))
     except StopIteration:
         return None
-
-
-if __name__ == '__main__':
-    tunes = ITunes()
-    for p in tunes.tracks:
-        print t.title
-        print t.artist
-        print t.genre
-        print t.stars

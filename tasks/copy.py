@@ -33,7 +33,7 @@ def playlist_files(ctx, playlist, dest_dir, start=None, stop=None):
 
 
 @task
-def copy_tracks_newer_than(ctx, date, dest_dir):
+def tracks_newer_than(ctx, date, dest_dir):
     """
     Copy music files newer than the given date to the specified directory.
     Accepts date strings in the form YYYY-mm-dd.

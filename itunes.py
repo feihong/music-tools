@@ -72,6 +72,10 @@ class Track(object):
     def genre(self): return self._track.genre()
 
     @property
+    def date_added(self):
+        return self._track
+
+    @property
     def stars(self):
         rating = self.rating
         if rating == 100:
@@ -105,8 +109,7 @@ class Track(object):
 
     @property
     def date_added(self):
-        return datetime.fromtimestamp(
-            self._track.dateAdded().timeIntervalSince1970())
+        return self._track.dateAdded().timeIntervalSince1970()
 
 
 def first(iterable, predicate):

@@ -1,6 +1,7 @@
 import sys
 import itertools
 import os.path
+from pathlib import Path
 from datetime import datetime
 
 from ScriptingBridge import SBApplication
@@ -93,7 +94,7 @@ class Track(object):
 
     @property
     def path(self):
-        return self._track.get().location().path()
+        return Path(self._track.get().location().path())
 
     @property
     def filename(self):

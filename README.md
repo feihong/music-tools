@@ -6,6 +6,6 @@ A collection of Python scripts to do stuff with your music collection.
 
 ```
 pip install virtualenvwrapper
-mkvirtualenv --python=`python2` music
-pip install - requirements.txt
+mkvirtualenv -p python3 music
+pipenv install
 ```

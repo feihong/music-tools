@@ -23,6 +23,7 @@ def to_m4a(ctx, mp3_file):
     'ffmpeg',
     '-y',                   # overwrite existing file
     '-i', str(mp3_file),
+    '-vn',                  # ignore video/image
     '-c:a', 'libfdk_aac',   # use best encoder
     '-vbr', '2',            # use high quality
     str(output_file)

@@ -47,7 +47,6 @@ def import_meta(ctx, input_file):
         _track.setRating_(meta['rating'])
 
 
-
 def _create_track_map():
     def gen():
         for track in itunes.ITunes.tracks:

@@ -9,3 +9,10 @@ pip install virtualenvwrapper
 mkvirtualenv -p python3 music
 pipenv install
 ```
+
+# Commands
+
+List commands
+
+    inv -l
+

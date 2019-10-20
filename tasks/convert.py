@@ -49,16 +49,17 @@ def to_mp4(ctx, m4a_file):
   image_file_initial = Path(m4a_file.parent) / (m4a_file.stem + '_artwork_1.jpg')
   image_file = Path(m4a_file.stem).with_suffix('.jpg')
 
-  cmd = [
-    'AtomicParsley',
-    str(m4a_file),
-    '--extractPix'
-  ]
-  subprocess.call(cmd)
+  if not image_file.exists():
+    cmd = [
+      'AtomicParsley',
+      str(m4a_file),
+      '--extractPix'
+    ]
+    subprocess.call(cmd)
 
-  shutil.move(image_file_initial, image_file)
+    shutil.move(image_file_initial, image_file)
 
-  # https://apple.stackexchange.com/a/107786
+  # Source: https://apple.stackexchange.com/a/107786
   cmd = [
     'ffmpeg',
     '-y',                   # overwrite existing file

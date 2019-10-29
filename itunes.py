@@ -10,10 +10,10 @@ from Foundation import NSMutableIndexSet, NSURL
 
 class ITunes(object):
     def __init__(self):
-        self.app = app = SBApplication.applicationWithBundleIdentifier_(
-            'com.apple.iTunes')
+        self.app = SBApplication.applicationWithBundleIdentifier_(
+            'com.apple.Music')
         self.app.setFixedIndexing_(True)
-        self.source = first(app.sources(), lambda x: x.name() == 'Library')
+        self.source = first(self.app.sources(), lambda x: x.name() == 'Library')
 
     @property
     def playlists(self):

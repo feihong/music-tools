@@ -24,8 +24,8 @@ def playlist_files(ctx, playlist, dest_dir, start=None, stop=None):
     for i, track in enumerate(tracks, 1):
         path = track.path
         output_path = dest_dir / path.name
-        # shutil.copy(path, output_path)
-        os.symlink(path, output_path)   # create symlink instead of copying file
+        shutil.copy(path, output_path)
+        # os.symlink(path, output_path)   # create symlink instead of copying file
         print(f'{i}. {track.title} - {track.artist}')
 
 
@@ -42,6 +42,7 @@ def tracks_newer_than(ctx, date, dest_dir):
     for track in tunes.tracks:
         if track.date_added >= start_date:
             print(track.title)
+            print(track.path)
             shutil.copy(track.path, dest_dir)
             count += 1
     print(f'Copied {count} tracks to {dest_dir}')
@@ -81,6 +82,7 @@ HTML_TEMPLATE = """\
 </body>
 </html>
 """
+
 
 def get_tracks(playlist_name, start=None, stop=None):
     import itunes

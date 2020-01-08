@@ -4,15 +4,14 @@ A collection of Python scripts to do stuff with your music collection.
 
 # Installation
 
-```
-pip install virtualenvwrapper
-mkvirtualenv -p python3 music
-pipenv install
-```
+    pipenv install
 
 # Commands
+
+Enter virtualenv
+
+    pipenv shell
 
 List commands
 
     inv -l
-

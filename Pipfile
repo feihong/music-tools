@@ -1,15 +1,13 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
 invoke = "*"
 mako = "*"
 pyobjc = "*"
 
-
 [dev-packages]
+pylint = "*"
+autopep8 = "*"

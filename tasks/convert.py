@@ -18,6 +18,16 @@ def to_m4a(ctx, mp3_file):
     print(f'{mp3_file} is already in m4a format')
     return
 
+  cmd = [
+      'mp3gain',
+      # Apply Track gain automatically (all files set to equal loudness)
+      '-r',
+      # Automatically lower Track/Album gain to not clip audio
+      '-k',
+      str(mp3_file),
+  ]
+  subprocess.call(cmd)
+
   output_file = Path(mp3_file.stem).with_suffix('.m4a')
 
   cmd = [

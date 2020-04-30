@@ -1,8 +1,10 @@
 .DS_Store
 __pycache__
 metadata.json
+/.vscode
 
 # Output:
 *.m4a
 *.mp4
 *.jpg
+*.mp3

@@ -22,22 +22,27 @@ func findPlaylist(playlists: [ITLibPlaylist], name: String) -> ITLibPlaylist? {
   return nil
 }
 
-guard CommandLine.arguments.count >= 2 else {
+guard let searchName = CommandLine.arguments.get(1) else {
   print("Please enter name of playlist you want to search for")
   exit(1)
 }
 
-if let library = try? ITLibrary(apiVersion: "1.1"), let searchName = CommandLine.arguments.get(1) {
-  // let playlists = library.allPlaylists
-  guard let playlist = findPlaylist(playlists: library.allPlaylists, name: searchName) else {
-        print("Did not find a playlist whose name starts with '\(searchName)'")
-    exit(1)
-  }
-  for track in playlist.items {
-    print(track.title)
-    print(track.location!.path)
-    print()
-    // print(track.addedDate ?? "")
-    // print(track.modifiedDate ?? "")
-  }
+guard let library = try? ITLibrary(apiVersion: "1.1") else {
+  print("Cannot load ITLibrary")
+  exit(1)
+}
+
+let playlists = library.allPlaylists
+
+guard let playlist = findPlaylist(playlists: library.allPlaylists, name: searchName) else {
+  print("Did not find a playlist whose name starts with '\(searchName)'")
+  exit(1)
+}
+
+for track in playlist.items {
+  print(track.title)
+  print(track.location!.path)
+  print(track.addedDate!)
+  print(track.modifiedDate!)
+  print()
 }

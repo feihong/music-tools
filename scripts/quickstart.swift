@@ -1,6 +1,5 @@
 // https://developer.apple.com/documentation/ituneslibrary
 
-import Foundation
 import iTunesLibrary
 
 // Add a function for safe array access

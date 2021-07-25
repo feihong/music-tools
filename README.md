@@ -14,4 +14,4 @@ Enter virtualenv
 
 List commands
 
-    inv -l
+    pipenv run inv -l

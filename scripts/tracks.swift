@@ -25,6 +25,7 @@ guard let playlist = getMusicPlaylist() else {
 
 for track in playlist.items {
   print(track.title)
+  print(track.artist?.name ?? "")
   print(track.location!.path)
   print(track.addedDate!)
   print(track.modifiedDate!)

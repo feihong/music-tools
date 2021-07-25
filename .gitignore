@@ -4,6 +4,7 @@ metadata.json
 /.vscode
 
 # Output:
+tracks.json
 *.m4a
 *.mp4
 *.jpg

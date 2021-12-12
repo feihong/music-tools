@@ -1,3 +1,6 @@
+"""
+Put all tracks into month folders of the format YYYY-MM
+"""
 import re
 from pathlib import Path
 import json

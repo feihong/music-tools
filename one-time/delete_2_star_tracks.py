@@ -1,3 +1,6 @@
+"""
+Delete 2 star tracks
+"""
 import json
 import os
 from pathlib import Path

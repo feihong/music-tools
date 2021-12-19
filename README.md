@@ -1,20 +1,12 @@
 # Music Tools
 
-A collection of Python scripts to do stuff with your music collection.
+A collection of (mostly Python) scripts to do stuff with your music collection.
 
 # Installation
 
-    pipenv install
+    pip install --user --requirement requirements.txt
 
 # Commands
-
-Enter virtualenv
-
-    pipenv shell
-
-List commands
-
-    pipenv run inv -l
 
 Export all tracks to tracks.json
 

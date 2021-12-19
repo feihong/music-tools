@@ -1,3 +1,6 @@
+"""
+Deprecated, prefer using Swift scripts to manipulate iTunes library
+"""
 import sys
 import itertools
 import os.path

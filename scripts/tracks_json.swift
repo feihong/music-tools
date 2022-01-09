@@ -1,7 +1,12 @@
-// https://developer.apple.com/documentation/ituneslibrary
-// https://developer.apple.com/documentation/ituneslibrary/itlibmediaitem
-// This script is much, much faster than the Python equivalent
+/*
+Extract track metadata of all music tracks to tracks.json
 
+This script is much, much faster than the Python equivalent that uses PyObjC.
+
+Links:
+https://developer.apple.com/documentation/ituneslibrary
+https://developer.apple.com/documentation/ituneslibrary/itlibmediaitem
+*/
 import Foundation
 import iTunesLibrary
 

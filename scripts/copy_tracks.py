@@ -1,3 +1,6 @@
+"""
+Copy all the tracks in tracks.json to ~/export/music, organized into folders based on their star ratings.
+"""
 from pathlib import Path
 import json
 import shutil

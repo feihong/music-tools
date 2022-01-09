@@ -17,16 +17,20 @@ guard let library = try? ITLibrary(apiVersion: "1.1") else {
 
 let playlists = library.allPlaylists
 
-func getMusicPlaylist() -> ITLibPlaylist? {
+func getPlaylist(by: (ITLibPlaylist) -> Bool) -> ITLibPlaylist? {
   for playlist in playlists {
-    if playlist.distinguishedKind == .kindMusic {
+    if by(playlist) {
       return playlist
     }
   }
   return nil
 }
 
-guard let playlist = getMusicPlaylist() else {
+let playlist = CommandLine.arguments.count <= 1
+  ? getPlaylist(by: {$0.distinguishedKind == .kindMusic})
+  : getPlaylist(by: {$0.name == CommandLine.arguments[1]})
+
+guard let playlist = playlist else {
   print("Failed to access music playlist")
   exit(1)
 }
